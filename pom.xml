@@ -95,6 +95,7 @@
 							<artifactId>lombok-mapstruct-binding</artifactId>
 							<version>${lombok-mapstruct-binding.version}</version>
 						</path>
+						<!-- https://stackoverflow.com/a/66736846/18107591 -->
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
