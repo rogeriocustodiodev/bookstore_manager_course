@@ -3,6 +3,7 @@ package com.rogeriocustodio.bookstoremanager.controller;
 import com.rogeriocustodio.bookstoremanager.dto.BookDTO;
 import com.rogeriocustodio.bookstoremanager.dto.MessageResponseDTO;
 import com.rogeriocustodio.bookstoremanager.entity.Book;
+import com.rogeriocustodio.bookstoremanager.exception.BookNotFoundException;
 import com.rogeriocustodio.bookstoremanager.mapper.BookMapper;
 import com.rogeriocustodio.bookstoremanager.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -31,18 +31,10 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        Optional<Book> optionalBook = bookService.findById(id);
+    public ResponseEntity<?> findById(@PathVariable Long id) throws BookNotFoundException {
+        Book book = bookService.findById(id);
 
-        if (optionalBook.isPresent()) {
-            return ResponseEntity
-                    .ok()
-                    .body(bookMapper.toDTO(optionalBook.get()));
-        } else {
-            return ResponseEntity
-                    .notFound()
-                    .build();
-        }
+        return ResponseEntity.ok().body(bookMapper.toDTO(book));
     }
 
 }

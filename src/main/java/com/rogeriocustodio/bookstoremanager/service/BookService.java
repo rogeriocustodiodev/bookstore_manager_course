@@ -1,8 +1,8 @@
 package com.rogeriocustodio.bookstoremanager.service;
 
-import com.rogeriocustodio.bookstoremanager.dto.BookDTO;
 import com.rogeriocustodio.bookstoremanager.dto.MessageResponseDTO;
 import com.rogeriocustodio.bookstoremanager.entity.Book;
+import com.rogeriocustodio.bookstoremanager.exception.BookNotFoundException;
 import com.rogeriocustodio.bookstoremanager.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,9 @@ public class BookService {
                 .build();
     }
 
-    public Optional<Book> findById(Long id) {
-        return bookRepository.findById(id);
+    public Book findById(Long id) throws BookNotFoundException {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
 }
+
